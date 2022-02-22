@@ -6,5 +6,5 @@ export default function App() {
     <div className='ui containger'>
         <Postlist />
     </div>
-    )
+    )  
 }

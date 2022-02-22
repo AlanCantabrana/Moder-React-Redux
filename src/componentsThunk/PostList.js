@@ -1,15 +1,37 @@
 import React, {useEffect} from "react";
 import { connect } from "react-redux";
-import { fetchPost } from "../actions/indexThunk";
+import { fetchPostsAndUsers } from "../actions/indexThunk";
+import UserHeader from "./UserHeader";
 
-function Postlist ({fetchPost}) {
+function Postlist  ({fetchPostsAndUsers, posts}) {
 
     /* eslint-disable */
     useEffect(() => {
-        fetchPost()
+        fetchPostsAndUsers();
     },[])
 
-    return <div>Post List</div>
+    const renderList = () => {
+        return posts.map(post => (
+            <div className="item" key={post.id}>
+                <i className="large middle aligned icon user"/>
+                <div className="content">
+                    <div className="description">
+                        <h2>{post.title}</h2>
+                        <p>{post.body}</p>
+                    </div>
+                    <UserHeader userId={post.userId}/>
+                </div>
+            </div>
+        ))
+    }
+
+    return <div className="ui relaxed divided list">{renderList()}</div>
 }
 
-export default connect(null, {fetchPost})(Postlist)
+const mapStateToProps = state => {
+    return {
+        posts: state.posts
+    }
+}
+
+export default connect(mapStateToProps, {fetchPostsAndUsers})(Postlist)
